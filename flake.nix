@@ -177,7 +177,7 @@
                     enable = true;
                     binSh = null;
                     packages = [
-                      pkgs.libtensorflow-bin
+                      libtensorflow-bin
                       pkgs.darktable
                       pkgs.ffmpeg
                       pkgs.exiftool
@@ -187,7 +187,7 @@
                   };
 
                   path = [
-                    pkgs.libtensorflow-bin
+                    libtensorflow-bin
                     pkgs.darktable
                     pkgs.ffmpeg
                     pkgs.exiftool
@@ -262,7 +262,6 @@
                       JPEG_SIZE = "7680";
                       PUBLIC = "false";
                       READONLY = "false";
-                      TENSORFLOW_OFF = "true";
                       SIDECAR_JSON = "true";
                       SIDECAR_YAML = "true";
                       SIDECAR_PATH = "${cfg.dataDir}/sidecar";
@@ -299,6 +298,22 @@
                 rev = photoprism.rev;
                 sha256 = photoprism.narHash;
               };
+
+              libtensorflow-bin = pkgs.libtensorflow-bin.overrideAttrs (
+                old: {
+                  # 21.05 does not have libtensorflow-bin 1.x anymore & photoprism isn't compatible with tensorflow 2.x yet
+                  # https://github.com/photoprism/photoprism/issues/222
+                  src = fetchurl {
+                    url = "https://dl.photoprism.app/tensorflow/amd64/libtensorflow-amd64-avx2-1.15.2.tar.gz";
+                    sha256 = "sha256-zu50uqgT/7DIjLzvJNJ624z+bTXjEljS5Gfq0fK7CjQ=";
+                  };
+
+                  buildCommand = old.buildCommand + ''
+                    ln -sf $out/lib/libtensorflow.so $out/lib/libtensorflow.so.1
+                    ln -sf $out/lib/libtensorflow_framework.so $out/lib/libtensorflow_framework.so.1
+                  '';
+                }
+              );
             in
               buildGoApplication {
                 name = "photoprism";
@@ -312,26 +327,7 @@
                 # https://github.com/mattn/go-sqlite3/issues/803
                 CGO_CFLAGS = "-Wno-return-local-addr";
 
-                buildInputs = [
-                  #https://github.com/andir/infra/blob/master/nix/packages/photoprism/default.nix
-                  (
-                    libtensorflow-bin.overrideAttrs (
-                      old: {
-                        # 21.05 does not have libtensorflow-bin 1.x anymore & photoprism isn't compatible with tensorflow 2.x yet
-                        # https://github.com/photoprism/photoprism/issues/222
-                        src = fetchurl {
-                          url = "https://dl.photoprism.app/tensorflow/amd64/libtensorflow-amd64-avx2-1.15.2.tar.gz";
-                          sha256 = "sha256-zu50uqgT/7DIjLzvJNJ624z+bTXjEljS5Gfq0fK7CjQ=";
-                        };
-
-                        buildCommand = old.buildCommand + ''
-                          ln -sf $out/lib/libtensorflow.so $out/lib/libtensorflow.so.1
-                          ln -sf $out/lib/libtensorflow_framework.so $out/lib/libtensorflow_framework.so.1
-                        '';
-                      }
-                    )
-                  )
-                ];
+                buildInputs = [ libtensorflow-bin ];
 
                 prePatch = ''
                   substituteInPlace internal/commands/passwd.go --replace '/bin/stty' "${coreutils}/bin/stty"
