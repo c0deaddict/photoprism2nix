@@ -177,7 +177,7 @@
                     enable = true;
                     binSh = null;
                     packages = [
-                      pkgs.photoprism.libtensorflow-bin
+                      cfg.package.libtensorflow-bin
                       pkgs.darktable
                       pkgs.ffmpeg
                       pkgs.exiftool
@@ -187,7 +187,7 @@
                   };
 
                   path = [
-                    pkgs.photoprism.libtensorflow-bin
+                    cfg.package.libtensorflow-bin
                     pkgs.darktable
                     pkgs.ffmpeg
                     pkgs.exiftool
