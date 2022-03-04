@@ -6,7 +6,7 @@
       flake = false;
     };
     photoprism = {
-      url = "github:photoprism/photoprism";
+      url = "github:photoprism/photoprism/220302-0059f429";
       flake = false;
     };
     flake-compat = {
@@ -320,12 +320,12 @@
                         # 21.05 does not have libtensorflow-bin 1.x anymore & photoprism isn't compatible with tensorflow 2.x yet
                         # https://github.com/photoprism/photoprism/issues/222
                         src = fetchurl {
-                          url = "https://dl.photoprism.app/tensorflow/linux/libtensorflow-linux-cpu-1.15.2.tar.gz";
-                          sha256 = "sha256-bZAC3PJxqcjuGM4RcNtzYtkg3FD3SrO5beDsPoKenzc=";
+                          url = "https://dl.photoprism.app/tensorflow/amd64/libtensorflow-amd64-avx2-1.15.2.tar.gz";
+                          sha256 = "sha256-zu50uqgT/7DIjLzvJNJ624z+bTXjEljS5Gfq0fK7CjQ=";
                         };
 
                         buildCommand = old.buildCommand + ''
-                          ln -sf $out/lib/libtensorflow_framework.so $out/lib/libtensorflow.so.1
+                          ln -sf $out/lib/libtensorflow.so $out/lib/libtensorflow.so.1
                           ln -sf $out/lib/libtensorflow_framework.so $out/lib/libtensorflow_framework.so.1
                         '';
                       }
