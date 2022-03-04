@@ -301,13 +301,17 @@
                   #https://github.com/andir/infra/blob/master/nix/packages/photoprism/default.nix
                   (
                     libtensorflow-bin.overrideAttrs (
-                      oA: {
+                      old: {
                         # 21.05 does not have libtensorflow-bin 1.x anymore & photoprism isn't compatible with tensorflow 2.x yet
                         # https://github.com/photoprism/photoprism/issues/222
                         src = fetchurl {
-                          url = "https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-1.14.0.tar.gz";
-                          sha256 = "04bi3ijq4sbb8c5vk964zlv0j9mrjnzzxd9q9knq3h273nc1a36k";
+                          url = "https://dl.photoprism.app/tensorflow/linux/libtensorflow-linux-cpu-1.15.2.tar.gz";
+                          sha256 = "sha256-bZAC3PJxqcjuGM4RcNtzYtkg3FD3SrO5beDsPoKenzc=";
                         };
+
+                        buildCommand = old.buildCommand + ''
+                          ln -sf $out/lib/libtensorflow_framework.so $out/lib/libtensorflow_framework.so.1
+                        '';
                       }
                     )
                   )
