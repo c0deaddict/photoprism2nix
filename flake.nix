@@ -1,3 +1,6 @@
+# https://github.com/andir/infra/blob/0edaea917ac9baaa63017d959659c6593e8451ed/config/modules/photoprism.nix
+# https://github.com/andir/infra/blob/a19923352c9abcc6a905e6a2b919a41d6c378ef7/nix/packages/photoprism/default.nix
+
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/release-21.11";
@@ -6,7 +9,7 @@
       flake = false;
     };
     photoprism = {
-      url = "github:photoprism/photoprism/220302-0059f429";
+      url = "github:photoprism/photoprism?rev=45fc2c4c9ec65a4074a1c3c7632c610ed548de64";
       flake = false;
     };
     flake-compat = {
