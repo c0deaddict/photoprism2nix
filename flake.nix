@@ -177,7 +177,7 @@
                     enable = true;
                     binSh = null;
                     packages = [
-                      libtensorflow-bin
+                      pkgs.photoprism.libtensorflow-bin
                       pkgs.darktable
                       pkgs.ffmpeg
                       pkgs.exiftool
@@ -187,7 +187,7 @@
                   };
 
                   path = [
-                    libtensorflow-bin
+                    pkgs.photoprism.libtensorflow-bin
                     pkgs.darktable
                     pkgs.ffmpeg
                     pkgs.exiftool
@@ -335,6 +335,7 @@
                 '';
 
                 passthru = rec {
+                  inherit libtensorflow-bin;
                   frontend =
                     let
                       noderanz = callPackage ranz2nix {
