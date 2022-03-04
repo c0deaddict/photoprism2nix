@@ -176,24 +176,26 @@
                   ];
                   wantedBy = [ "multi-user.target" ];
 
-                  confinement = {
-                    enable = true;
-                    binSh = null;
-                    packages = [
-                      cfg.package.libtensorflow-bin
-                      pkgs.darktable
-                      pkgs.ffmpeg
-                      pkgs.exiftool
-                      cfg.package
-                      pkgs.cacert
-                    ];
-                  };
+                  # confinement = {
+                  #   enable = true;
+                  #   binSh = null;
+                  #   packages = [
+                  #     cfg.package.libtensorflow-bin
+                  #     pkgs.darktable
+                  #     pkgs.ffmpeg
+                  #     pkgs.exiftool
+                  #     cfg.package
+                  #     pkgs.cacert
+                  #   ];
+                  # };
 
                   path = [
-                    cfg.package.libtensorflow-bin
+                    # cfg.package.libtensorflow-bin
+                    pkgs.coreutils
                     pkgs.darktable
                     pkgs.ffmpeg
                     pkgs.exiftool
+                    pkgs.libheif
                   ];
 
                   script =
@@ -237,14 +239,12 @@
                     EnvironmentFile = mkIf cfg.keyFile "${cfg.dataDir}/keyFile";
                   };
 
-                  environment = (
+                  environment = {
+                    #HOME = "${cfg.dataDir}";
+                    SSL_CERT_DIR = "${pkgs.cacert}/etc/ssl/certs";
+                  } // (
                     lib.mapAttrs' (n: v: lib.nameValuePair "PHOTOPRISM_${n}" (toString v))
                     {
-                      #HOME = "${cfg.dataDir}";
-                      SSL_CERT_DIR = "${pkgs.cacert}/etc/ssl/certs";
-
-                      DARKTABLE_PRESETS = "false";
-
                       DATABASE_DRIVER =
                         if !cfg.mysql
                         then "sqlite"
@@ -281,6 +281,8 @@
                       THUMB_SIZE_UNCACHED = "7680";
                       THUMB_UNCACHED = "true";
                       UPLOAD_NSFW = "true";
+                      # prefer darktable?
+                      DISABLE_RAWTHERAPEE = "true";
                     }
                     // (
                       if !cfg.keyFile
@@ -302,21 +304,30 @@
                 sha256 = photoprism.narHash;
               };
 
-              libtensorflow-bin = pkgs.libtensorflow-bin.overrideAttrs (
-                old: {
-                  # 21.05 does not have libtensorflow-bin 1.x anymore & photoprism isn't compatible with tensorflow 2.x yet
-                  # https://github.com/photoprism/photoprism/issues/222
-                  src = fetchurl {
-                    url = "https://dl.photoprism.app/tensorflow/amd64/libtensorflow-amd64-avx2-1.15.2.tar.gz";
-                    sha256 = "sha256-zu50uqgT/7DIjLzvJNJ624z+bTXjEljS5Gfq0fK7CjQ=";
-                  };
+              libtensorflow-bin = pkgs.libtensorflow-bin.overrideAttrs (oA: {
+                # 21.05 does not have libtensorflow-bin 1.x anymore & photoprism isn't compatible with tensorflow 2.x yet
+                # https://github.com/photoprism/photoprism/issues/222
+                src = fetchurl {
+                  url = "https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-1.14.0.tar.gz";
+                  sha256 = "04bi3ijq4sbb8c5vk964zlv0j9mrjnzzxd9q9knq3h273nc1a36k";
+                };
+              });
 
-                  buildCommand = old.buildCommand + ''
-                    ln -sf $out/lib/libtensorflow.so $out/lib/libtensorflow.so.1
-                    ln -sf $out/lib/libtensorflow_framework.so $out/lib/libtensorflow_framework.so.1
-                  '';
-                }
-              );
+              # libtensorflow-bin = pkgs.libtensorflow-bin.overrideAttrs (
+              #   old: {
+              #     # 21.05 does not have libtensorflow-bin 1.x anymore & photoprism isn't compatible with tensorflow 2.x yet
+              #     # https://github.com/photoprism/photoprism/issues/222
+              #     src = fetchurl {
+              #       url = "https://dl.photoprism.app/tensorflow/amd64/libtensorflow-amd64-avx2-1.15.2.tar.gz";
+              #       sha256 = "sha256-zu50uqgT/7DIjLzvJNJ624z+bTXjEljS5Gfq0fK7CjQ=";
+              #     };
+
+              #     buildCommand = old.buildCommand + ''
+              #       ln -sf $out/lib/libtensorflow.so $out/lib/libtensorflow.so.1
+              #       ln -sf $out/lib/libtensorflow_framework.so $out/lib/libtensorflow_framework.so.1
+              #     '';
+              #   }
+              # );
             in
               buildGoApplication {
                 name = "photoprism";
