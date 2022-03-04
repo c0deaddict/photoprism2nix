@@ -1,5 +1,17 @@
 {
   "nodes": {
+    "facenet": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-7WJ2hFE6LNUMiivtmC1lvwJZvbrRDJFKXfHTFuHxzm8=",
+        "type": "tarball",
+        "url": "https://dl.photoprism.org/tensorflow/facenet.zip"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://dl.photoprism.org/tensorflow/facenet.zip"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -52,13 +64,25 @@
         "type": "github"
       }
     },
+    "nasnet": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-QRec0+vLPEv8vaHIki1xPQdDmatD18zCzj0BdrnIliU=",
+        "type": "tarball",
+        "url": "https://dl.photoprism.org/tensorflow/nasnet.zip"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://dl.photoprism.org/tensorflow/nasnet.zip"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1644600908,
-        "narHash": "sha256-TLWxMZAgn4o+y4DgCwzbzhI0vrZ45CmQo4EbhzhH1Ko=",
+        "lastModified": 1646358457,
+        "narHash": "sha256-rzvpqPRX5q5sOUbu7lhZkk9vhnIVWSARnu+R9mSE3Vc=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "b1396e289d341cbd0a6751f2ffd014ac461526dd",
+        "rev": "0fc9d50c3104c8ddb11cf0c83a045eb78ad17058",
         "type": "github"
       },
       "original": {
@@ -68,14 +92,26 @@
         "type": "github"
       }
     },
+    "nsfw": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-aCkihld4zqMH1ubzxFuXI9MUoET5wsC0cB/k/FgaGUg=",
+        "type": "tarball",
+        "url": "https://dl.photoprism.org/tensorflow/nsfw.zip"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://dl.photoprism.org/tensorflow/nsfw.zip"
+      }
+    },
     "photoprism": {
       "flake": false,
       "locked": {
-        "lastModified": 1644435044,
-        "narHash": "sha256-qAF/bE4MypG4nRfnaNUg9WC1v+1/C/eqJwLTSguZ7+w=",
+        "lastModified": 1646234346,
+        "narHash": "sha256-hEA2E5ty9j9BH7DviYh5meao0ot0alPgMoJcplJDRc4=",
         "owner": "photoprism",
         "repo": "photoprism",
-        "rev": "ec8b0fd21204a23ad2b1125579228e76badd21c8",
+        "rev": "0059f429edac04b3741bf3f85411ada686cf477f",
         "type": "github"
       },
       "original": {
@@ -102,10 +138,13 @@
     },
     "root": {
       "inputs": {
+        "facenet": "facenet",
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
         "gomod2nix": "gomod2nix",
+        "nasnet": "nasnet",
         "nixpkgs": "nixpkgs",
+        "nsfw": "nsfw",
         "photoprism": "photoprism",
         "ranz2nix": "ranz2nix"
       }

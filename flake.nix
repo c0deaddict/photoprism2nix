@@ -18,6 +18,18 @@
       url = "github:tweag/gomod2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nasnet = {
+      url = "https://dl.photoprism.org/tensorflow/nasnet.zip";
+      flake = false;
+    };
+    nsfw = {
+      url = "https://dl.photoprism.org/tensorflow/nsfw.zip";
+      flake = false;
+    };
+    facenet = {
+      url = "https://dl.photoprism.org/tensorflow/facenet.zip";
+      flake = false;
+    };
   };
 
   outputs =
@@ -29,6 +41,9 @@
     , flake-utils
     , gomod2nix
     , flake-compat
+    , nasnet
+    , nsfw
+    , facenet
     }:
       flake-utils.lib.eachSystem [ "x86_64-linux" "x86_64-darwin" "i686-linux" ]
       (
@@ -310,6 +325,7 @@
                         };
 
                         buildCommand = old.buildCommand + ''
+                          ln -sf $out/lib/libtensorflow_framework.so $out/lib/libtensorflow.so.1
                           ln -sf $out/lib/libtensorflow_framework.so $out/lib/libtensorflow_framework.so.1
                         '';
                       }
@@ -373,25 +389,15 @@
                       };
 
                   assets =
-                    let
-                      nasnet = fetchzip {
-                        url = "https://dl.photoprism.org/tensorflow/nasnet.zip";
-                        sha256 = "09cnr2wpc09xrv1crms3mfcl61rxf4nr5j51ppy4ng6bxg9rq5s1";
-                      };
-
-                      nsfw = fetchzip {
-                        url = "https://dl.photoprism.org/tensorflow/nsfw.zip";
-                        sha256 = "0j0r39cgrr0zf2sc1hpr8jh19lr3jxdw9wz6sq3s7kkqay324ab8";
-                      };
-                    in
-                      runCommand "photoprims-assets" { } ''
-                        cp -rv ${src}/assets $out
-                        chmod -R +rw $out
-                        rm -rf $out/static/build
-                        cp -rv ${frontend} $out/static/build
-                        ln -s ${nsfw} $out/nsfw
-                        ln -s ${nasnet} $out/nasnet
-                      '';
+                    runCommand "photoprims-assets" { } ''
+                      cp -rv ${src}/assets $out
+                      chmod -R +rw $out
+                      rm -rf $out/static/build
+                      cp -rv ${frontend} $out/static/build
+                      ln -s ${nsfw} $out/nsfw
+                      ln -s ${nasnet} $out/nasnet
+                      ln -s ${facenet} $out/facenet
+                    '';
                 };
               }
           );
