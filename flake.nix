@@ -9,7 +9,7 @@
       flake = false;
     };
     photoprism = {
-      url = "github:photoprism/photoprism?rev=45fc2c4c9ec65a4074a1c3c7632c610ed548de64";
+      url = "github:photoprism/photoprism/220302-0059f429";
       flake = false;
     };
     flake-compat = {
@@ -190,7 +190,6 @@
                   # };
 
                   path = [
-                    # cfg.package.libtensorflow-bin
                     pkgs.coreutils
                     pkgs.darktable
                     pkgs.ffmpeg
@@ -255,31 +254,19 @@
                         else "photoprism@unix(/run/mysqld/mysqld.sock)/photoprism?charset=utf8mb4,utf8&parseTime=true";
                       DEBUG = "true";
                       DETECT_NSFW = "true";
-                      EXPERIMENTAL = "true";
+                      # EXPERIMENTAL = "true";
                       WORKERS = "8";
                       ORIGINALS_LIMIT = "1000000";
                       HTTP_HOST = "${cfg.host}";
                       HTTP_PORT = "${toString cfg.port}";
                       HTTP_MODE = "release";
-                      JPEG_QUALITY = "92";
-                      JPEG_SIZE = "7680";
                       PUBLIC = "false";
                       READONLY = "false";
-                      SIDECAR_JSON = "true";
-                      SIDECAR_YAML = "true";
                       SIDECAR_PATH = "${cfg.dataDir}/sidecar";
-                      SETTINGS_HIDDEN = "false";
-                      SITE_CAPTION = "Browse Your Life";
-                      SITE_TITLE = "PhotoPrism";
-                      SITE_URL = "http://127.0.0.1:2342/";
                       STORAGE_PATH = "${cfg.dataDir}/storage";
                       ASSETS_PATH = "${cfg.package.assets}";
                       ORIGINALS_PATH = "${cfg.dataDir}/originals";
                       IMPORT_PATH = "${cfg.dataDir}/import";
-                      THUMB_FILTER = "linear";
-                      THUMB_SIZE = "2048";
-                      THUMB_SIZE_UNCACHED = "7680";
-                      THUMB_UNCACHED = "true";
                       UPLOAD_NSFW = "true";
                       # prefer darktable?
                       DISABLE_RAWTHERAPEE = "true";
@@ -304,30 +291,30 @@
                 sha256 = photoprism.narHash;
               };
 
-              libtensorflow-bin = pkgs.libtensorflow-bin.overrideAttrs (oA: {
-                # 21.05 does not have libtensorflow-bin 1.x anymore & photoprism isn't compatible with tensorflow 2.x yet
-                # https://github.com/photoprism/photoprism/issues/222
-                src = fetchurl {
-                  url = "https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-1.14.0.tar.gz";
-                  sha256 = "04bi3ijq4sbb8c5vk964zlv0j9mrjnzzxd9q9knq3h273nc1a36k";
-                };
-              });
+              # libtensorflow-bin = pkgs.libtensorflow-bin.overrideAttrs (oA: {
+              #   # 21.05 does not have libtensorflow-bin 1.x anymore & photoprism isn't compatible with tensorflow 2.x yet
+              #   # https://github.com/photoprism/photoprism/issues/222
+              #   src = fetchurl {
+              #     url = "https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-1.14.0.tar.gz";
+              #     sha256 = "04bi3ijq4sbb8c5vk964zlv0j9mrjnzzxd9q9knq3h273nc1a36k";
+              #   };
+              # });
 
-              # libtensorflow-bin = pkgs.libtensorflow-bin.overrideAttrs (
-              #   old: {
-              #     # 21.05 does not have libtensorflow-bin 1.x anymore & photoprism isn't compatible with tensorflow 2.x yet
-              #     # https://github.com/photoprism/photoprism/issues/222
-              #     src = fetchurl {
-              #       url = "https://dl.photoprism.app/tensorflow/amd64/libtensorflow-amd64-avx2-1.15.2.tar.gz";
-              #       sha256 = "sha256-zu50uqgT/7DIjLzvJNJ624z+bTXjEljS5Gfq0fK7CjQ=";
-              #     };
+              libtensorflow-bin = pkgs.libtensorflow-bin.overrideAttrs (
+                old: {
+                  # 21.05 does not have libtensorflow-bin 1.x anymore & photoprism isn't compatible with tensorflow 2.x yet
+                  # https://github.com/photoprism/photoprism/issues/222
+                  src = fetchurl {
+                    url = "https://dl.photoprism.app/tensorflow/amd64/libtensorflow-amd64-avx2-1.15.2.tar.gz";
+                    sha256 = "sha256-zu50uqgT/7DIjLzvJNJ624z+bTXjEljS5Gfq0fK7CjQ=";
+                  };
 
-              #     buildCommand = old.buildCommand + ''
-              #       ln -sf $out/lib/libtensorflow.so $out/lib/libtensorflow.so.1
-              #       ln -sf $out/lib/libtensorflow_framework.so $out/lib/libtensorflow_framework.so.1
-              #     '';
-              #   }
-              # );
+                  buildCommand = old.buildCommand + ''
+                    ln -sf $out/lib/libtensorflow.so $out/lib/libtensorflow.so.1
+                    ln -sf $out/lib/libtensorflow_framework.so $out/lib/libtensorflow_framework.so.1
+                  '';
+                }
+              );
             in
               buildGoApplication {
                 name = "photoprism";
