@@ -218,23 +218,23 @@
                     SyslogIdentifier = "photoprism";
                     #Sops secrets PHOTOPRISM_ADMIN_PASSWORD= /****/
                     PrivateTmp = true;
-                    PrivateUsers = true;
-                    PrivateDevices = true;
-                    ProtectClock = true;
-                    ProtectKernelLogs = true;
-                    SystemCallArchitectures = "native";
-                    RestrictNamespaces = true;
-                    MemoryDenyWriteExecute = true;
-                    RestrictAddressFamilies = "AF_UNIX AF_INET AF_INET6";
-                    RestrictSUIDSGID = true;
-                    NoNewPrivileges = true;
-                    RemoveIPC = true;
-                    LockPersonality = true;
-                    ProtectHome = true;
-                    ProtectHostname = true;
-                    RestrictRealtime = true;
-                    SystemCallFilter = [ "@system-service" "~@privileged" "~@resources" ];
-                    SystemCallErrorNumber = "EPERM";
+                    # PrivateUsers = true;
+                    # PrivateDevices = true;
+                    # ProtectClock = true;
+                    # ProtectKernelLogs = true;
+                    # SystemCallArchitectures = "native";
+                    # RestrictNamespaces = true;
+                    # MemoryDenyWriteExecute = true;
+                    # RestrictAddressFamilies = "AF_UNIX AF_INET AF_INET6";
+                    # RestrictSUIDSGID = true;
+                    # NoNewPrivileges = true;
+                    # RemoveIPC = true;
+                    # LockPersonality = true;
+                    # ProtectHome = true;
+                    # ProtectHostname = true;
+                    # RestrictRealtime = true;
+                    # SystemCallFilter = [ "@system-service" "~@privileged" "~@resources" ];
+                    # SystemCallErrorNumber = "EPERM";
                     EnvironmentFile = mkIf cfg.keyFile "${cfg.dataDir}/keyFile";
                   };
 
@@ -334,6 +334,8 @@
                   substituteInPlace internal/commands/passwd.go --replace '/bin/stty' "${coreutils}/bin/stty"
                   sed -i 's/zip.Deflate/zip.Store/g' internal/api/zip.go
                 '';
+
+                separateDebugInfo = true;
 
                 passthru = rec {
                   inherit libtensorflow-bin;
