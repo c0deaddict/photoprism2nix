@@ -222,9 +222,8 @@
                     PrivateDevices = true;
                     ProtectClock = true;
                     ProtectKernelLogs = true;
-                    # SystemCallArchitectures = "native";
+                    SystemCallArchitectures = "native";
                     RestrictNamespaces = true;
-                    MemoryDenyWriteExecute = true;
                     RestrictAddressFamilies = "AF_UNIX AF_INET AF_INET6";
                     RestrictSUIDSGID = true;
                     NoNewPrivileges = true;
@@ -233,8 +232,8 @@
                     ProtectHome = true;
                     ProtectHostname = true;
                     RestrictRealtime = true;
-                    # SystemCallFilter = [ "@system-service" "~@privileged" "~@resources" ];
-                    # SystemCallErrorNumber = "EPERM";
+                    SystemCallFilter = [ "@system-service" "~@privileged" "~@resources" ];
+                    SystemCallErrorNumber = "EPERM";
                     EnvironmentFile = mkIf cfg.keyFile "${cfg.dataDir}/keyFile";
                   };
 
