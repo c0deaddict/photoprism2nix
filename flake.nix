@@ -176,18 +176,20 @@
                   ];
                   wantedBy = [ "multi-user.target" ];
 
-                  # confinement = {
-                  #   enable = true;
-                  #   binSh = null;
-                  #   packages = [
-                  #     cfg.package.libtensorflow-bin
-                  #     pkgs.darktable
-                  #     pkgs.ffmpeg
-                  #     pkgs.exiftool
-                  #     cfg.package
-                  #     pkgs.cacert
-                  #   ];
-                  # };
+                  confinement = {
+                    enable = true;
+                    binSh = null;
+                    packages = [
+                      cfg.package
+                      libtensorflow-bin
+                      pkgs.cacert
+                      pkgs.coreutils
+                      pkgs.darktable
+                      pkgs.ffmpeg
+                      pkgs.exiftool
+                      pkgs.libheif
+                    ];
+                  };
 
                   path = [
                     pkgs.coreutils
@@ -216,7 +218,6 @@
                     CacheDirectory = "photoprism";
                     StateDirectory = "photoprism";
                     SyslogIdentifier = "photoprism";
-                    #Sops secrets PHOTOPRISM_ADMIN_PASSWORD= /****/
                     PrivateTmp = true;
                     PrivateUsers = true;
                     PrivateDevices = true;
@@ -238,7 +239,6 @@
                   };
 
                   environment = {
-                    #HOME = "${cfg.dataDir}";
                     SSL_CERT_DIR = "${pkgs.cacert}/etc/ssl/certs";
                   } // (
                     lib.mapAttrs' (n: v: lib.nameValuePair "PHOTOPRISM_${n}" (toString v))
@@ -321,8 +321,6 @@
                   substituteInPlace internal/commands/passwd.go --replace '/bin/stty' "${coreutils}/bin/stty"
                   sed -i 's/zip.Deflate/zip.Store/g' internal/api/zip.go
                 '';
-
-                separateDebugInfo = true;
 
                 passthru = rec {
                   inherit libtensorflow-bin;
