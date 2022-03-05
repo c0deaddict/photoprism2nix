@@ -181,7 +181,7 @@
                     binSh = null;
                     packages = [
                       cfg.package
-                      libtensorflow-bin
+                      cfg.package.libtensorflow-bin
                       pkgs.cacert
                       pkgs.coreutils
                       pkgs.darktable
