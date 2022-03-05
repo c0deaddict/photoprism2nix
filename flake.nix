@@ -218,20 +218,20 @@
                     SyslogIdentifier = "photoprism";
                     #Sops secrets PHOTOPRISM_ADMIN_PASSWORD= /****/
                     PrivateTmp = true;
-                    # PrivateUsers = true;
-                    # PrivateDevices = true;
-                    # ProtectClock = true;
-                    # ProtectKernelLogs = true;
+                    PrivateUsers = true;
+                    PrivateDevices = true;
+                    ProtectClock = true;
+                    ProtectKernelLogs = true;
                     # SystemCallArchitectures = "native";
-                    # RestrictNamespaces = true;
+                    RestrictNamespaces = true;
                     # MemoryDenyWriteExecute = true;
                     # RestrictAddressFamilies = "AF_UNIX AF_INET AF_INET6";
                     # RestrictSUIDSGID = true;
                     # NoNewPrivileges = true;
                     # RemoveIPC = true;
                     # LockPersonality = true;
-                    # ProtectHome = true;
-                    # ProtectHostname = true;
+                    ProtectHome = true;
+                    ProtectHostname = true;
                     # RestrictRealtime = true;
                     # SystemCallFilter = [ "@system-service" "~@privileged" "~@resources" ];
                     # SystemCallErrorNumber = "EPERM";
@@ -252,10 +252,6 @@
                         if !cfg.mysql
                         then "${cfg.dataDir}/photoprism.sqlite"
                         else "photoprism@unix(/run/mysqld/mysqld.sock)/photoprism?charset=utf8mb4,utf8&parseTime=true";
-                      DEBUG = "true";
-                      DETECT_NSFW = "true";
-                      # EXPERIMENTAL = "true";
-                      WORKERS = "8";
                       ORIGINALS_LIMIT = "1000000";
                       HTTP_HOST = "${cfg.host}";
                       HTTP_PORT = "${toString cfg.port}";
@@ -268,6 +264,7 @@
                       ORIGINALS_PATH = "${cfg.dataDir}/originals";
                       IMPORT_PATH = "${cfg.dataDir}/import";
                       UPLOAD_NSFW = "true";
+                      DETECT_NSFW = "true";
                       # prefer darktable?
                       DISABLE_RAWTHERAPEE = "true";
                     }
@@ -389,7 +386,7 @@
                       };
 
                   assets =
-                    runCommand "photoprims-assets" { } ''
+                    runCommand "photoprism-assets" { } ''
                       cp -rv ${src}/assets $out
                       chmod -R +rw $out
                       rm -rf $out/static/build
