@@ -78,16 +78,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1646416052,
-        "narHash": "sha256-bfV62gYQGYjb/Gvw6MdMuEvWCcC838mI1Dzi1efjqTA=",
+        "lastModified": 1654515819,
+        "narHash": "sha256-EKqyLXo171SEPnqcDHQnOLaSXIWWpatsgaJTGM0Tdjg=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "c78fc23f108b9a3bea9bf8693d2943ee0269c804",
+        "rev": "9acc2a130b95cc913c2918301bf186605c1e6af5",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "release-21.11",
+        "ref": "release-22.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -107,16 +107,16 @@
     "photoprism": {
       "flake": false,
       "locked": {
-        "lastModified": 1646234346,
-        "narHash": "sha256-hEA2E5ty9j9BH7DviYh5meao0ot0alPgMoJcplJDRc4=",
+        "lastModified": 1653767649,
+        "narHash": "sha256-mYFhw//Z5Vwek4kLItHBwK/HC1I7ZaEwGH4ZZMnRQ9I=",
         "owner": "photoprism",
         "repo": "photoprism",
-        "rev": "0059f429edac04b3741bf3f85411ada686cf477f",
+        "rev": "efb5d710c197d2793c0d9ed668140612f40610a7",
         "type": "github"
       },
       "original": {
         "owner": "photoprism",
-        "ref": "220302-0059f429",
+        "ref": "220528-efb5d710",
         "repo": "photoprism",
         "type": "github"
       }
