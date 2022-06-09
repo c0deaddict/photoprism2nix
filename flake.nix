@@ -128,7 +128,6 @@
 
                 services.mysql = mkIf cfg.mysql {
                   enable = true;
-                  package = mkDefault pkgs.mysql;
                   ensureDatabases = [ "photoprism" ];
                   ensureUsers = [{
                     name = "photoprism";
